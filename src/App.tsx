@@ -11,6 +11,7 @@ import dataProvider from "./tools/dataProvider";
 import { authProvider } from "./tools/Authprovider";
 import { MonetizationOn } from "@mui/icons-material";
 import AchatsList from "./achats/AchatsList";
+import AchatsShow from "./achats/AchatsShow";
 
 export const App = () => (
   <Admin
@@ -23,7 +24,7 @@ export const App = () => (
     <Resource
       name="achats"
       list={AchatsList}
-      //   show={AccountShow}
+      show={AchatsShow}
       // edit={AccountEdit}
       //   create={AccountCreate}
       icon={MonetizationOn}

@@ -8,6 +8,7 @@ import {
   TextField,
 } from "react-admin";
 import { Chip } from "@mui/material";
+import AmountComponents from "../tools/AmountComponents";
 
 // Filters
 const AchatsFilters = [
@@ -45,26 +46,10 @@ const AchatsList = () => {
         />
         <TextField source="typeAchat" label="Type Achat" />
         <DateField source="dates" label="Date" showTime />
-        <FunctionField
-          label="Montant"
-          render={(record) =>
-            record ? (
-              <Chip
-                label={`${record.effectif} ${record.symbole}`}
-                size="small"
-                sx={{
-                  fontWeight: "bold",
-                  backgroundColor:
-                    record.effectif > 0
-                      ? "rgba(46, 125, 50, 0.1)" // light green
-                      : "rgba(211, 47, 47, 0.1)", // light red
-                  color: record.effectif > 0 ? "success.main" : "error.main",
-                }}
-              />
-            ) : (
-              ""
-            )
-          }
+        <AmountComponents
+          amountLabel="Montant"
+          _source="effectif"
+          currency="symbole"
         />
       </Datagrid>
     </List>
