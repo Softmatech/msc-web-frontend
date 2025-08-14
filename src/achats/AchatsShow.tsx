@@ -5,6 +5,9 @@ import {
   TextField,
   ArrayField,
   Datagrid,
+  ReferenceField,
+  RichTextField,
+  ChipField,
 } from "react-admin";
 import AmountComponents from "../tools/AmountComponents";
 
@@ -27,8 +30,10 @@ const AchatsShow: React.FC = (props) => {
         <ArrayField source="detailleAchats" label="Détails Achat">
           <Datagrid>
             <TextField source="produit" label="Produit" />
-            <TextField source="quantite" label="Quantité" />
-            <TextField source="unite" label="Unité" />
+            <ChipField source="quantite" label="Quantité" />
+            <ReferenceField source="unite.id" reference="unities" label="Unité">
+              <TextField source="description" />
+            </ReferenceField>
             <AmountComponents
               amountLabel="Prix"
               _source="prix"
