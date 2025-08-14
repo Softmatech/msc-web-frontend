@@ -6,8 +6,8 @@ import {
   ArrayField,
   Datagrid,
   ReferenceField,
-  RichTextField,
   ChipField,
+  DateField,
 } from "react-admin";
 import AmountComponents from "../tools/AmountComponents";
 
@@ -19,7 +19,7 @@ const AchatsShow: React.FC = (props) => {
         <TextField source="id" label="ID" />
         <TextField source="legende" label="Légende" />
         <TextField source="typeAchat" label="Type Achat" />
-        <TextField source="dates" label="Date" />
+        <DateField source="dates" label="Date" showTime />
         <AmountComponents
           amountLabel="Montant"
           _source="effectif"

@@ -68,7 +68,7 @@ const AchatCreate = () => {
   const redirect = useRedirect();
 
   const onSuccess = (data: any) => {
-    redirect(`/persons/${data.id}/show`);
+    redirect(`/achats/${data.id}/show`);
   };
 
   return (

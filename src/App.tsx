@@ -12,6 +12,7 @@ import { authProvider } from "./tools/Authprovider";
 import { MonetizationOn } from "@mui/icons-material";
 import AchatsList from "./achats/AchatsList";
 import AchatsShow from "./achats/AchatsShow";
+import AchatsCreate from "./achats/AchatsCreate";
 
 export const App = () => (
   <Admin
@@ -26,7 +27,7 @@ export const App = () => (
       list={AchatsList}
       show={AchatsShow}
       // edit={AccountEdit}
-      //   create={AccountCreate}
+      create={AchatsCreate}
       icon={MonetizationOn}
     />
   </Admin>
