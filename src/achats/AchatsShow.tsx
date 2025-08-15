@@ -9,7 +9,7 @@ import {
   ChipField,
   DateField,
 } from "react-admin";
-import AmountComponents from "../tools/AmountComponents";
+import AmountComponents from "../tools/Components/AmountComponents";
 
 const AchatsShow: React.FC = (props) => {
   return (

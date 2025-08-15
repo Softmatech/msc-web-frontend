@@ -8,7 +8,7 @@ import {
   TextField,
 } from "react-admin";
 import { Chip } from "@mui/material";
-import AmountComponents from "../tools/AmountComponents";
+import AmountComponents from "../tools/Components/AmountComponents";
 
 // Filters
 const AchatsFilters = [

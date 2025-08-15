@@ -21,6 +21,9 @@ import ConfirmSaveToolbar from "../tools/ConfirmSaveToolbar";
 import FournisseurInput from "../tools/Components/FournisseurInput";
 import SymboleInput from "../tools/Components/SymboleInput";
 import ProduitInput from "../tools/Components/ProduitInput";
+import NumberOnlyInput from "../tools/Components/NumberOnlyInput";
+import DecimalInput from "../tools/Components/DecimalInput";
+import UniteInput from "../tools/Components/UniteInput";
 
 const typeAchats = [
   { id: "Cash", name: "Cash" },
@@ -123,12 +126,16 @@ const AchatCreate = () => {
 
                 {/* Quantity */}
                 <Grid item xs={2}>
-                  <TextInput source="quantite" label="Quantité" />
+                  <NumberOnlyInput source="quantite" label="Quantité" />
                 </Grid>
 
+                {/* Unité */}
+                <Grid item xs={2}>
+                  <UniteInput source="unite" />
+                </Grid>
                 {/* Unit price */}
                 <Grid item xs={2}>
-                  <TextInput source="prixUnitaire" label="Prix unitaire" />
+                  <DecimalInput source="prixUnitaire" label="Prix unitaire" />
                 </Grid>
 
                 {/* Total auto-calculated */}
