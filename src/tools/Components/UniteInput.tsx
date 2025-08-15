@@ -1,15 +1,15 @@
 import { useGetList, SelectInput } from "react-admin";
 
 const UniteInput = (props) => {
-  const { data = [], isPending } = useGetList("unities");
+  const { data, isPending } = useGetList("unities");
 
   return (
     <SelectInput
       {...props}
       choices={data}
       optionText="description"
-      optionValue="id" // store the product ID, not EPC
-      isLoading={isPending}
+      optionValue="id" // sends { id: value }
+      isPending={isPending}
       label="Unité"
     />
   );

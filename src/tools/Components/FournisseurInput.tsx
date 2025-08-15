@@ -5,11 +5,11 @@ const FournisseurInput = () => {
   // data is an array of { id: 123, code: 'FR', name: 'France' }
   return (
     <SelectInput
-      source="persons"
-      choices={data}
+      source="fournisseur.id" // <- matches your backend field
+      choices={data || []}
       optionText="nom"
       optionValue="id"
-      isPending={isPending}
+      isLoading={isPending}
       label="Fournisseur"
       validate={required()}
     />

@@ -5,7 +5,7 @@ const SymboleInput = () => {
   // data is an array of { id: 123, code: 'FR', name: 'France' }
   return (
     <SelectInput
-      source="devises"
+      source="symbole"
       choices={data}
       optionText="deviseName"
       optionValue="symbole"

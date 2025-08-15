@@ -38,7 +38,7 @@ const EffectifWatcher = () => {
   useEffect(() => {
     const grandTotal = details.reduce((sum, row) => {
       const q = Number(row?.quantite || 0);
-      const p = Number(row?.prixUnitaire || 0);
+      const p = Number(row?.prix || 0);
       return sum + q * p;
     }, 0);
 
@@ -54,7 +54,7 @@ const EffectifWatcher = () => {
 
 const AchatCreate = () => {
   const redirect = useRedirect();
-  const [prixUnitaire, SetPrixUnitaire] = useState("0.00");
+  const [prix, SetPrix] = useState("0.00");
   const [quantite, SetQuantite] = useState("0");
   // const [subTotal, SetSubTotal] = useState("0.00");
 
@@ -139,15 +139,15 @@ const AchatCreate = () => {
             {/* This computes and updates 'effectif' whenever rows change */}
             <EffectifWatcher />
             <Grid item xs={3}>
-              <SymboleInput />
+              <SymboleInput source="symbole" />
             </Grid>
             <Grid item xs={3}>
               <ReferenceInput
-                source="utilisateur"
+                source="utilisateur.id"
                 reference="users"
                 label="Utilisateur"
               >
-                <AutocompleteInput optionText="username" />
+                <AutocompleteInput optionText="username" optionValue="id" />
               </ReferenceInput>
             </Grid>
           </Grid>
@@ -156,7 +156,7 @@ const AchatCreate = () => {
             <SimpleFormIterator>
               <Grid container spacing={1}>
                 {/* Product selection */}
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                   <ProduitInput source="produit" />
                 </Grid>
 
@@ -179,6 +179,11 @@ const AchatCreate = () => {
                           }}
                         />
                       );
+                      <TextInput
+                        source="epc"
+                        defaultValue={0}
+                        style={{ display: "none" }}
+                      />;
                     }}
                   </FormDataConsumer>
                 </Grid>
@@ -189,12 +194,19 @@ const AchatCreate = () => {
 
                 {/* Unité */}
                 <Grid item xs={2}>
-                  <UniteInput source="unite" />
+                  <ReferenceInput
+                    label="Unité"
+                    source="unite.id" // or "unite" depending on your backend mapping
+                    reference="unities"
+                    perPage={100}
+                  >
+                    <SelectInput optionText="description" optionValue="id" />
+                  </ReferenceInput>
                 </Grid>
 
                 {/* Unit price */}
                 <Grid item xs={2}>
-                  <DecimalInput source="prixUnitaire" label="Prix unitaire" />
+                  <DecimalInput source="prix" label="Prix unitaire" />
                 </Grid>
 
                 {/* Total auto-calculated */}
@@ -202,8 +214,8 @@ const AchatCreate = () => {
                   <FormDataConsumer>
                     {({ scopedFormData, formData }) => {
                       const q = Number(scopedFormData?.quantite || 0);
-                      const p = Number(scopedFormData?.prixUnitaire || 0);
-                      const total = (q * p).toLocaleString(undefined, {
+                      const p = Number(scopedFormData?.prix || 0);
+                      const subtotal = (q * p).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
@@ -212,7 +224,7 @@ const AchatCreate = () => {
                       return (
                         <MuiTextField
                           label="Sous Total"
-                          value={total} // only the number here
+                          value={subtotal} // only the number here
                           variant="outlined"
                           size="small"
                           fullWidth
