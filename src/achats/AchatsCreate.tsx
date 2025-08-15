@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid, TextField as MuiTextField } from "@mui/material";
 import {
   Create,
   DateInput,
@@ -10,12 +10,10 @@ import {
   ReferenceInput,
   AutocompleteInput,
   ArrayInput,
-  NumberInput,
   SimpleFormIterator,
   FormDataConsumer,
   useGetList,
   TextField,
-  NumberField,
 } from "react-admin";
 import ConfirmSaveToolbar from "../tools/ConfirmSaveToolbar";
 import FournisseurInput from "../tools/Components/FournisseurInput";
@@ -24,14 +22,20 @@ import ProduitInput from "../tools/Components/ProduitInput";
 import NumberOnlyInput from "../tools/Components/NumberOnlyInput";
 import DecimalInput from "../tools/Components/DecimalInput";
 import UniteInput from "../tools/Components/UniteInput";
+import { useEffect, useState } from "react";
 
 const typeAchats = [
   { id: "Cash", name: "Cash" },
   { id: "Credit", name: "Credit" },
 ];
 
+export const handleMultiplication = (a, b) => a * b;
+
 const AchatCreate = () => {
   const redirect = useRedirect();
+  const [prixUnitaire, SetPrixUnitaire] = useState("0.00");
+  const [quantite, SetQuantite] = useState("0");
+  // const [subTotal, SetSubTotal] = useState("0.00");
 
   // Fetch the list of products once
   const { data: produitsList = [] } = useGetList("produits");
@@ -39,6 +43,12 @@ const AchatCreate = () => {
   const onSuccess = (data) => {
     redirect(`/achats/${data.id}/show`);
   };
+
+  // useEffect(() => {
+  //   SetSubTotal(handleMultiplication(quantite, prixUnitaire));
+  // }, [quantite, prixUnitaire]);
+
+  // console.log("SUB------->> " + subTotal);
 
   return (
     <Create mutationOptions={{ onSuccess }}>
@@ -97,7 +107,6 @@ const AchatCreate = () => {
             </Grid>
           </Grid>
 
-          {/* Array of detailleAchats */}
           <ArrayInput source="detailleAchats">
             <SimpleFormIterator>
               <Grid container spacing={2}>
@@ -106,24 +115,28 @@ const AchatCreate = () => {
                   <ProduitInput source="produit" />
                 </Grid>
 
-                {/* EPC auto-filled from selected product */}
+                {/* EPC auto-filled */}
                 <Grid item xs={3}>
                   <FormDataConsumer>
-                    {({ scopedFormData }) => {
+                    {({ scopedFormData = {} }) => {
                       const selectedProduit = produitsList.find(
-                        (p) => p.id === scopedFormData?.produit,
+                        (p) => p.id === scopedFormData.produit,
                       );
                       return (
-                        <TextField
-                          source="epc"
+                        <MuiTextField
                           label="EPC"
-                          record={{ epc: selectedProduit?.epc || "" }}
+                          value={selectedProduit?.epc || ""}
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            readOnly: true,
+                          }}
                         />
                       );
                     }}
                   </FormDataConsumer>
                 </Grid>
-
                 {/* Quantity */}
                 <Grid item xs={2}>
                   <NumberOnlyInput source="quantite" label="Quantité" />
@@ -133,6 +146,7 @@ const AchatCreate = () => {
                 <Grid item xs={2}>
                   <UniteInput source="unite" />
                 </Grid>
+
                 {/* Unit price */}
                 <Grid item xs={2}>
                   <DecimalInput source="prixUnitaire" label="Prix unitaire" />
@@ -141,16 +155,20 @@ const AchatCreate = () => {
                 {/* Total auto-calculated */}
                 <Grid item xs={2}>
                   <FormDataConsumer>
-                    {({ scopedFormData }) => {
-                      const total =
-                        (scopedFormData?.quantite || 0) *
-                        (scopedFormData?.prixUnitaire || 0);
+                    {({ scopedFormData = {} }) => {
+                      const q = Number(scopedFormData.quantite || 0);
+                      const p = Number(scopedFormData.prixUnitaire || 0);
+                      const total = q * p;
                       return (
-                        <TextInput
-                          source="total"
+                        <MuiTextField
                           label="Sous Total"
-                          value={{ total }}
-                          disabled
+                          value={total}
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            readOnly: true,
+                          }}
                         />
                       );
                     }}
