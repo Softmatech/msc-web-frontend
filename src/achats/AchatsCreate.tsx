@@ -108,15 +108,18 @@ const AchatCreate = () => {
             <Grid item xs={3}>
               <FormDataConsumer>
                 {({ formData }) => {
+                  const effectifValue = Number(
+                    formData?.effectif || 0,
+                  ).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  });
                   const symbol = formData?.devises || "";
-                  const effectifValue = Number(formData?.effectif || 0).toFixed(
-                    2,
-                  );
 
                   return (
                     <MuiTextField
                       label="Effectif"
-                      value={effectifValue}
+                      value={effectifValue} // only the number
                       variant="outlined"
                       size="small"
                       fullWidth
@@ -198,15 +201,18 @@ const AchatCreate = () => {
                 <Grid item xs={2}>
                   <FormDataConsumer>
                     {({ scopedFormData, formData }) => {
+                      const q = Number(scopedFormData?.quantite || 0);
+                      const p = Number(scopedFormData?.prixUnitaire || 0);
+                      const total = (q * p).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      });
                       const symbol = formData?.devises || "";
-                      const quantite = Number(scopedFormData?.quantite || 0);
-                      const prix = Number(scopedFormData?.prixUnitaire || 0);
-                      const total = (quantite * prix).toFixed(2);
 
                       return (
                         <MuiTextField
                           label="Sous Total"
-                          value={total}
+                          value={total} // only the number here
                           variant="outlined"
                           size="small"
                           fullWidth
@@ -216,7 +222,8 @@ const AchatCreate = () => {
                               <InputAdornment position="end">
                                 <span style={{ fontWeight: "bold" }}>
                                   {symbol}
-                                </span>
+                                </span>{" "}
+                                {/* bold symbol */}
                               </InputAdornment>
                             ),
                           }}
