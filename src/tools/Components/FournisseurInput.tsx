@@ -1,4 +1,4 @@
-import { useGetList, SelectInput } from "react-admin";
+import { useGetList, SelectInput, required } from "react-admin";
 
 const FournisseurInput = () => {
   const { data, isPending } = useGetList("persons/fournisseurs");
@@ -11,6 +11,7 @@ const FournisseurInput = () => {
       optionValue="id"
       isPending={isPending}
       label="Fournisseur"
+      validate={required()}
     />
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Grid, TextField as MuiTextField } from "@mui/material";
+import { Grid, TextField as MuiTextField, InputAdornment } from "@mui/material";
 import {
   Create,
   DateInput,
@@ -13,7 +13,6 @@ import {
   SimpleFormIterator,
   FormDataConsumer,
   useGetList,
-  TextField,
 } from "react-admin";
 import ConfirmSaveToolbar from "../tools/ConfirmSaveToolbar";
 import FournisseurInput from "../tools/Components/FournisseurInput";
@@ -66,12 +65,6 @@ const AchatCreate = () => {
     redirect(`/achats/${data.id}/show`);
   };
 
-  // useEffect(() => {
-  //   SetSubTotal(handleMultiplication(quantite, prixUnitaire));
-  // }, [quantite, prixUnitaire]);
-
-  // console.log("SUB------->> " + subTotal);
-
   return (
     <Create mutationOptions={{ onSuccess }}>
       <TabbedForm
@@ -85,7 +78,7 @@ const AchatCreate = () => {
         }
       >
         <TabbedForm.Tab label="ACHAT">
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             <Grid item xs={3}>
               <TextInput
                 source="legende"
@@ -113,12 +106,32 @@ const AchatCreate = () => {
               <FournisseurInput />
             </Grid>
             <Grid item xs={3}>
-              <TextInput
-                source="effectif"
-                label="Effectif"
-                InputProps={{ readOnly: true }}
-                format={(v) => Number(v ?? 0).toFixed(2)}
-              />
+              <FormDataConsumer>
+                {({ formData }) => {
+                  const symbol = formData?.devises || "";
+                  const effectifValue = Number(formData?.effectif || 0).toFixed(
+                    2,
+                  );
+
+                  return (
+                    <MuiTextField
+                      label="Effectif"
+                      value={effectifValue}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <span style={{ fontWeight: "bold" }}>{symbol}</span>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  );
+                }}
+              </FormDataConsumer>
             </Grid>
             {/* This computes and updates 'effectif' whenever rows change */}
             <EffectifWatcher />
@@ -138,7 +151,7 @@ const AchatCreate = () => {
 
           <ArrayInput source="detailleAchats">
             <SimpleFormIterator>
-              <Grid container spacing={2}>
+              <Grid container spacing={1}>
                 {/* Product selection */}
                 <Grid item xs={3}>
                   <ProduitInput source="produit" />
@@ -184,10 +197,12 @@ const AchatCreate = () => {
                 {/* Total auto-calculated */}
                 <Grid item xs={2}>
                   <FormDataConsumer>
-                    {({ scopedFormData = {} }) => {
-                      const q = Number(scopedFormData.quantite || 0);
-                      const p = Number(scopedFormData.prixUnitaire || 0);
-                      const total = q * p;
+                    {({ scopedFormData, formData }) => {
+                      const symbol = formData?.devises || "";
+                      const quantite = Number(scopedFormData?.quantite || 0);
+                      const prix = Number(scopedFormData?.prixUnitaire || 0);
+                      const total = (quantite * prix).toFixed(2);
+
                       return (
                         <MuiTextField
                           label="Sous Total"
@@ -197,6 +212,13 @@ const AchatCreate = () => {
                           fullWidth
                           InputProps={{
                             readOnly: true,
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <span style={{ fontWeight: "bold" }}>
+                                  {symbol}
+                                </span>
+                              </InputAdornment>
+                            ),
                           }}
                         />
                       );

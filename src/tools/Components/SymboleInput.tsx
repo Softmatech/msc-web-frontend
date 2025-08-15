@@ -1,4 +1,4 @@
-import { useGetList, SelectInput } from "react-admin";
+import { useGetList, SelectInput, required } from "react-admin";
 
 const SymboleInput = () => {
   const { data, isPending } = useGetList("devises");
@@ -11,6 +11,7 @@ const SymboleInput = () => {
       optionValue="symbole"
       isPending={isPending}
       label="Devise"
+      validate={required()}
     />
   );
 };
