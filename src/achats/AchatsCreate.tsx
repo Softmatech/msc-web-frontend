@@ -23,6 +23,7 @@ import NumberOnlyInput from "../tools/Components/NumberOnlyInput";
 import DecimalInput from "../tools/Components/DecimalInput";
 import UniteInput from "../tools/Components/UniteInput";
 import { useEffect, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 
 const typeAchats = [
   { id: "Cash", name: "Cash" },
@@ -30,6 +31,27 @@ const typeAchats = [
 ];
 
 export const handleMultiplication = (a, b) => a * b;
+
+const EffectifWatcher = () => {
+  const { setValue } = useFormContext();
+  const details = useWatch({ name: "detailleAchats" }) || [];
+
+  useEffect(() => {
+    const grandTotal = details.reduce((sum, row) => {
+      const q = Number(row?.quantite || 0);
+      const p = Number(row?.prixUnitaire || 0);
+      return sum + q * p;
+    }, 0);
+
+    // Push the value into the form state
+    setValue("effectif", grandTotal, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  }, [details, setValue]);
+
+  return null; // no UI
+};
 
 const AchatCreate = () => {
   const redirect = useRedirect();
@@ -91,8 +113,15 @@ const AchatCreate = () => {
               <FournisseurInput />
             </Grid>
             <Grid item xs={3}>
-              <TextInput source="effectif" label="Effectif" disabled />
+              <TextInput
+                source="effectif"
+                label="Effectif"
+                InputProps={{ readOnly: true }}
+                format={(v) => Number(v ?? 0).toFixed(2)}
+              />
             </Grid>
+            {/* This computes and updates 'effectif' whenever rows change */}
+            <EffectifWatcher />
             <Grid item xs={3}>
               <SymboleInput />
             </Grid>
