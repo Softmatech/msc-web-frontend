@@ -29,6 +29,7 @@ const AchatsShow: React.FC = (props) => {
         {/* Nested DetailleAchats */}
         <ArrayField source="detailleAchats" label="Détails Achat">
           <Datagrid>
+            <TextField source="epc" label="Epc" />
             <TextField source="produit" label="Produit" />
             <ChipField source="quantite" label="Quantité" />
             <ReferenceField source="unite.id" reference="unities" label="Unité">

@@ -15,11 +15,12 @@ import {
   AutocompleteInput,
 } from "react-admin";
 import ConfirmSaveToolbar from "../tools/ConfirmSaveToolbar";
+import FournisseurInput from "../tools/Components/FournisseurInput";
 
-// const sexes = [
-//   { id: "Masculin", name: "Masculin" },
-//   { id: "Feminin", name: "Feminin" },
-// ];
+const typeAchats = [
+  { id: "Cash", name: "Cash" },
+  { id: "Credit", name: "Credit" },
+];
 
 // const documentTypes = [
 //   { id: "Passport", name: "Passport" },
@@ -75,6 +76,7 @@ const AchatCreate = () => {
     <Create mutationOptions={{ onSuccess }}>
       {/* <SimpleForm warnWhenUnsavedChanges> */}
       <TabbedForm
+        label="Achat"
         toolbar={
           <ConfirmSaveToolbar
             message={`Voulez-vous de creer un compte avec les informations ci-dessous`}
@@ -85,22 +87,19 @@ const AchatCreate = () => {
           />
         }
       >
-        <Form>
-          <Grid container>
-            <Grid item xs={6}>
-              <TextInput source="typeachat" />
+        <TabbedForm.Tab label="ACHAT">
+          <Grid container spacing={1}>
+            <Grid item xs={3}>
+              <SelectInput source="typeAchat" choices={typeAchats} />
             </Grid>
-            <Grid item xs={6}>
-              <TextInput source="fournisseur" />
+            <Grid item xs={3}>
+              <FournisseurInput />
             </Grid>
-            <Grid item xs={12}>
-              <AutocompleteInput source="devise" />
-            </Grid>
-            <Grid item xs={12}>
-              {/* <SaveButton /> */}
+            <Grid item xs={3}>
+              <SelectInput source="symbole" />
             </Grid>
           </Grid>
-        </Form>
+        </TabbedForm.Tab>
       </TabbedForm>
       {/* </SimpleForm> */}
     </Create>
