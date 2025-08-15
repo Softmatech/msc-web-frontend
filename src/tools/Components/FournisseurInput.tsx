@@ -10,6 +10,7 @@ const FournisseurInput = () => {
       optionText="nom"
       optionValue="id"
       isPending={isPending}
+      label="Fournisseur"
     />
   );
 };
